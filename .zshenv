@@ -1,0 +1,1 @@
+ZPLUGINDIR="$ZDOTDIR/plugins"
