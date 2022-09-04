@@ -27,10 +27,11 @@ function zsh_add_file() {
 
 function zsh_add_plugin() {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
+    PLUGIN_FILE_NAME=$([ -n "$2" ] && echo $2 || echo $PLUGIN_NAME)
     if [ -d "$ZPLUGINDIR/$PLUGIN_NAME" ]; then
         # For plugins
-        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
-        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_FILE_NAME.plugin.zsh" || \
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_FILE_NAME.zsh"
     else
         git clone "https://github.com/$1.git" "$ZPLUGINDIR/$PLUGIN_NAME"
     fi
@@ -84,7 +85,7 @@ zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "olets/zsh-window-title"
 zsh_add_plugin "zsh-users/zsh-completions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
-zsh_add_plugin "cpitt/zsh-dotenv"
+zsh_add_plugin "cpitt/zsh-dotenv" "dotenv"
 
 init_fzf
 
