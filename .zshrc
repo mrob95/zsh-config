@@ -97,6 +97,10 @@ function git() {
         python "$labeller_path" status "$talon_user_path/git_pt/status.py"
     elif [ "$1" = "branch" ] && [ "$#" = "1" ]; then
         python "$labeller_path" branch "$talon_user_path/git_pt/branch.py"
+    elif [ "$1" = "publish" ] && [ "$#" = "1" ] && [ -n "$BROWSER" ]; then
+        branch=$(command git rev-parse --abbrev-ref HEAD)
+        url=$(command git push -u origin $branch | tee $(tty) | grep "https://")
+        [ -n "$url" ] && $BROWSER $url
     else
         command git "$@"
     fi
