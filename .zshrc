@@ -75,10 +75,20 @@ print("\033]0;PDB: %s\a" % os.getcwd(), end=None)
 EOF
 }
 
+function init_ssh_agent() {
+    if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+        eval $(ssh-agent -s) > /dev/null
+        if [ "$(ssh-add -l)" = "The agent has no identities." ] ; then
+            ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1
+        fi
+    fi
+}
+
 # User configuration
 mkdir -p $ZPLUGINDIR
 
 init_pdbrc
+init_ssh_agent
 
 zsh_add_plugin "romkatv/powerlevel10k"
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
@@ -130,11 +140,12 @@ eval "$(pyenv init --path)"
 
 source $ZPLUGINDIR/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 fpath=(~/.zsh/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
-autoload -U compinit; compinit
-zstyle ':completion:*' menu yes
-zmodload zsh/complist
+autoload -U compinit; compinit  2> /dev/null
+zstyle ':completion:*:*:make:*' tag-order 'targets'
+setopt noautomenu
+setopt nomenucomplete
 _comp_options+=(globdots)		# Include hidden files.

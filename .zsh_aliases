@@ -1,2 +1,2 @@
 alias explorer="explorer.exe"
-alias activate="[ ! -d .venv ] && python -m venv .venv && .venv/bin/pip install pdbpp wheel; source .venv/bin/activate"
+alias activate="[ ! -d .venv ] && python -m venv .venv && .venv/bin/pip install wheel pdbpp; source .venv/bin/activate"
