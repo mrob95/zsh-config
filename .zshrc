@@ -105,6 +105,8 @@ talon_user_path="/mnt/c/Users/Mike/AppData/Roaming/talon/user"
 function git() {
     if [ "$1" = "status" ] && [ "$#" = "1" ]; then
         python "$labeller_path" status "$talon_user_path/git_pt/status.py"
+    elif [ "$1" = "stash" ] && [ "$2" = "pop" ] && [ "$#" = "2" ]; then
+        python "$labeller_path" stash_pop "$talon_user_path/git_pt/status.py"
     elif [ "$1" = "branch" ] && [ "$#" = "1" ]; then
         python "$labeller_path" branch "$talon_user_path/git_pt/branch.py"
     elif [ "$1" = "publish" ] && [ "$#" = "1" ] && [ -n "$BROWSER" ]; then
@@ -133,6 +135,7 @@ export PATH=$PATH:/usr/local/go/bin
 
 . "$HOME/.cargo/env"
 export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
