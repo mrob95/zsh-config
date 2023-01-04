@@ -62,12 +62,6 @@ function init_fzf() {
     source /usr/share/doc/fzf/examples/completion.zsh
 }
 
-function install_git_labeller() {
-    if [ ! -d $ZPLUGINDIR/talon-git-labeller ]; then
-        git clone --depth 1 https://github.com/mrob95/talon-git-labeller.git $ZPLUGINDIR/talon-git-labeller
-    fi
-}
-
 function init_pdbrc() {
     cat <<EOF > ~/.pdbrc
 import os
@@ -99,25 +93,6 @@ zsh_add_plugin "cpitt/zsh-dotenv" "dotenv"
 
 init_fzf
 
-install_git_labeller
-labeller_path="$ZPLUGINDIR/talon-git-labeller/main.py"
-talon_user_path="/mnt/c/Users/Mike/AppData/Roaming/talon/user"
-function git() {
-    if [ "$1" = "status" ] && [ "$#" = "1" ]; then
-        python "$labeller_path" status "$talon_user_path/git_pt/status.py"
-    elif [ "$1" = "stash" ] && [ "$2" = "pop" ] && [ "$#" = "2" ]; then
-        python "$labeller_path" stash_pop "$talon_user_path/git_pt/status.py"
-    elif [ "$1" = "branch" ] && [ "$#" = "1" ]; then
-        python "$labeller_path" branch "$talon_user_path/git_pt/branch.py"
-    elif [ "$1" = "publish" ] && [ "$#" = "1" ] && [ -n "$BROWSER" ]; then
-        branch=$(command git rev-parse --abbrev-ref HEAD)
-        url=$(command git push -u origin $branch 2>&1 | tee $(tty) | grep "/pull/new" | sed 's/remote:\s*//')
-        [ $pipestatus[1] -eq 1 ] && return 1
-        [ -n "$url" ] && $BROWSER $url
-    else
-        command git "$@"
-    fi
-}
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
