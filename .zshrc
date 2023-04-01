@@ -114,6 +114,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$ZDOTDIR/bin:$PATH"
 eval "$(pyenv init --path)"
 
 source $ZPLUGINDIR/powerlevel10k/powerlevel10k.zsh-theme
