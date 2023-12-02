@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+    echo "Usage: kubectl revert <deployment>"
+    exit 1
+fi
+
+deployment=$1
+
+target=$(kubectl rollout history "deployment/$deployment"  -o go-template --template="{{.metadata.creationTimestamp}} {{printf \"\t\"}} {{ index .metadata.annotations \"deployment.kubernetes.io/revision\" }} {{printf \"\t\"}}  {{ .metadata.name }} {{printf \"\n\"}}" | fzf --tac)
+
+revision=$(echo "$target" | awk '{print $2}')
+
+echo "Reverting deployment $deployment to revision $revision:"
+
+kubectl rollout history "deployment/$deployment" "--revision=$revision" -o yaml
+
+printf "\n"
+echo "Are you sure? (y/n)"
+read -r answer
+if [ "$answer" != "${answer#[Yy]}" ]; then
+    exit 0
+fi
+
+kubectl rollout undo "deployment/$deployment" "--to-revision=$revision"
