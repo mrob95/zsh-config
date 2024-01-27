@@ -83,6 +83,7 @@ function init_starship() {
 # User configuration
 mkdir -p $ZPLUGINDIR
 
+init_fzf
 init_pdbrc
 init_ssh_agent
 init_starship
@@ -94,7 +95,6 @@ zsh_add_plugin "zsh-users/zsh-completions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 zsh_add_plugin "cpitt/zsh-dotenv" "dotenv"
 
-init_fzf
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
