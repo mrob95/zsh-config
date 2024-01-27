@@ -1,12 +1,5 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# profiling
+# zmodload zsh/zprof
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -78,11 +71,21 @@ function init_ssh_agent() {
     fi
 }
 
+function init_starship() {
+    if [ ! command -v starship &> /dev/null ];then
+        echo "Installing starship"
+        curl -sS https://starship.rs/install.sh | sh
+    fi
+    export STARSHIP_CONFIG="${ZDOTDIR}/starship.toml"
+    eval "$(starship init zsh)"
+}
+
 # User configuration
 mkdir -p $ZPLUGINDIR
 
 init_pdbrc
 init_ssh_agent
+init_starship
 
 zsh_add_plugin "romkatv/powerlevel10k"
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
@@ -92,7 +95,6 @@ zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 zsh_add_plugin "cpitt/zsh-dotenv" "dotenv"
 
 init_fzf
-
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
@@ -116,11 +118,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$ZDOTDIR/bin:$PATH"
 eval "$(pyenv init --path)"
-
-source $ZPLUGINDIR/powerlevel10k/powerlevel10k.zsh-theme
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 fpath=(~/.zsh/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
 autoload -U compinit; compinit  2> /dev/null
