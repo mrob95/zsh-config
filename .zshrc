@@ -113,10 +113,11 @@ export PATH=$PATH:/usr/local/go/bin
 . "$HOME/.cargo/env"
 export PATH="$HOME/.poetry/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$ZDOTDIR/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 eval "$(pyenv init --path)"
 
 fpath=(~/.zsh/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
