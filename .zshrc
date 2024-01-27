@@ -120,7 +120,13 @@ export PATH="$ZDOTDIR/bin:$PATH"
 eval "$(pyenv init --path)"
 
 fpath=(~/.zsh/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
-autoload -U compinit; compinit  2> /dev/null
+
+autoload -Uz compinit
+for dump in $ZDOTDIR/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
+
 zstyle ':completion:*:*:make:*' tag-order 'targets'
 setopt noautomenu
 setopt nomenucomplete
