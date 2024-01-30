@@ -50,8 +50,8 @@ format = "([ $context]($style))"
 detect_folders = ["k8s"]
 detect_files = ["skaffold.yaml"]
 contexts = [
-  { context_pattern = ".*production.*", context_alias = "test" },
-  { context_pattern = ".*test.*", context_alias = "prod" },
+  { context_pattern = ".*production.*", context_alias = "prod" },
+  { context_pattern = ".*test.*", context_alias = "test" },
 ]
 
 [python]
