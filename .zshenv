@@ -3,3 +3,4 @@ ZPLUGINDIR="$ZDOTDIR/plugins"
 BROWSER="explorer.exe"
 GIT_EDITOR=notepad.exe
 EDITOR=notepad.exe
+PROMPT_EOL_MARK=''
