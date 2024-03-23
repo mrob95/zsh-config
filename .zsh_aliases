@@ -1,2 +1,3 @@
 alias explorer="explorer.exe"
 alias activate="[ ! -d .venv ] && python -m venv .venv && .venv/bin/pip install wheel pdbpp; source .venv/bin/activate"
+alias uuid='python -c "import uuid; print(uuid.uuid4())"'

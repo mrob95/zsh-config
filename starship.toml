@@ -41,12 +41,14 @@ style = "cyan"
 format = '([$hash ]($style))'
 
 [git_status]
-format = '($staged$modified$ahead_behind)'
+format = '($staged$renamed$deleted$modified$ahead_behind)'
 ahead = "([⇡${count} ](cyan))"
 behind = "([⇣${count} ](cyan))"
 modified = "([!${count} ](red))"
 diverged = '([⇕ ](cyan))'
 staged = "([+${count} ](green))"
+renamed = "([»${count} ](green))"
+deleted = "([-${count} ](red))"
 
 [kubernetes]
 disabled = false
