@@ -5,6 +5,12 @@ if [ $# != 1 ]; then
     exit 1
 fi
 
+if ! command -v fzf >/dev/null 2>&1
+then
+    echo "fzf could not be found"
+    exit 1
+fi
+
 deployment=$1
 
 target=$(kubectl rollout history "deployment/$deployment"  -o go-template --template="{{.metadata.creationTimestamp}} {{printf \"\t\"}} {{ index .metadata.annotations \"deployment.kubernetes.io/revision\" }} {{printf \"\t\"}}  {{ .metadata.name }} {{printf \"\n\"}}" | fzf --tac)
@@ -18,7 +24,8 @@ kubectl rollout history "deployment/$deployment" "--revision=$revision" -o yaml
 printf "\n"
 echo "Are you sure? (y/n)"
 read -r answer
-if [ "$answer" != "${answer#[Yy]}" ]; then
+if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
+    echo "Operation cancelled."
     exit 0
 fi
 
