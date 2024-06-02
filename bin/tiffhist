@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import os
+import numpy as np
+import sys
+import rasterio
+import matplotlib.pyplot as plt
+
+def plot_band_histograms(geotiff_path):
+    # Open the GeoTIFF file
+    with rasterio.open(geotiff_path) as src:
+        if src.count == 1:
+            # Single band image
+            band = src.read(1)
+            colors = ['gray']
+            bands = [band]
+        elif src.count == 3:
+            # Extract the bands (assuming RGB order)
+            red = src.read(1)   # Red band
+            green = src.read(2) # Green band
+            blue = src.read(3)  # Blue band
+            colors = ['red', 'green', 'blue']
+            bands = [red, green, blue]
+
+    # Percentiles to mark
+    percentiles = [0, 0.01, 0.05, 0.1, 0.5, 1, 99, 99.5, 99.9, 99.95, 99.99, 100]
+
+    # Create a histogram for each band
+    fig, axs = plt.subplots(len(bands), 1, figsize=(10, 12))
+
+    for i, band in enumerate(bands):
+        ax = axs[i] if len(bands) > 1 else axs
+        data = band.flatten()
+        # Calculate the percentiles
+        perc_values = np.percentile(data[data != 0], percentiles)
+        # Plot histogram
+        ax.hist(data[data != 0], bins=256, color=colors[i], alpha=0.7)
+        ax.set_title(f'Histogram of {colors[i].capitalize()} Band')
+
+        # Annotate percentiles
+        for perc, value in zip(percentiles, perc_values):
+            ax.axvline(x=value, color='k', linestyle='--', linewidth=1)
+            ax.text(value, 0, f'{perc}th', rotation=45, verticalalignment='bottom')
+
+    # Set layout to prevent overlap
+    plt.tight_layout()
+
+    # Save the figure as a PNG file with the same base name as the GeoTIFF file
+    output_filename = os.path.splitext(geotiff_path)[0] + '.png'
+    plt.savefig(output_filename)
+    plt.close()
+
+    print(f"Histograms saved as {output_filename}")
+
+plot_band_histograms(sys.argv[1])
