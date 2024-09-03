@@ -51,8 +51,8 @@ function init_fzf() {
         git clone --depth 1 https://github.com/junegunn/fzf.git $ZPLUGINDIR/fzf
         $ZPLUGINDIR/fzf/install
     fi
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-    source /usr/share/doc/fzf/examples/completion.zsh
+    source $ZPLUGINDIR/fzf/shell/key-bindings.zsh
+    source $ZPLUGINDIR/fzf/shell/completion.zsh
 }
 
 function init_pdbrc() {
