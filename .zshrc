@@ -51,8 +51,20 @@ function init_fzf() {
         git clone --depth 1 https://github.com/junegunn/fzf.git $ZPLUGINDIR/fzf
         $ZPLUGINDIR/fzf/install
     fi
-    source $ZPLUGINDIR/fzf/shell/key-bindings.zsh
-    source $ZPLUGINDIR/fzf/shell/completion.zsh
+
+    # Setup fzf
+    # ---------
+    if [[ ! "$PATH" == */home/mike/.zsh/plugins/fzf/bin* ]]; then
+        PATH="${PATH:+${PATH}:}/home/mike/.zsh/plugins/fzf/bin"
+    fi
+
+    # Auto-completion
+    # ---------------
+    [[ $- == *i* ]] && source "/home/mike/.zsh/plugins/fzf/shell/completion.zsh" 2> /dev/null
+
+    # Key bindings
+    # ------------
+    source "/home/mike/.zsh/plugins/fzf/shell/key-bindings.zsh"
 }
 
 function init_pdbrc() {
@@ -132,3 +144,5 @@ zstyle ':completion:*:*:make:*' tag-order 'targets'
 setopt noautomenu
 setopt nomenucomplete
 _comp_options+=(globdots)		# Include hidden files.
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
