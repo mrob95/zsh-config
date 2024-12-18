@@ -146,3 +146,5 @@ setopt nomenucomplete
 _comp_options+=(globdots)		# Include hidden files.
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+ 
+stty -F/dev/tty -ixon
