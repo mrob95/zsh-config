@@ -1,3 +1,8 @@
 alias explorer="explorer.exe"
-alias activate="[ ! -d .venv ] && python -m venv .venv && .venv/bin/pip install wheel pdbpp; source .venv/bin/activate"
-alias uuid='python -c "import uuid; print(uuid.uuid4())"'
+alias activate="[ ! -d .venv ] && python -m venv .venv && .venv/bin/pip install wheel; source .venv/bin/activate"
+alias uuid="python -c 'import uuid; print(uuid.uuid4())'"
+alias rmz='find . -type f \( -name "*:Zone.Identifier" -o -name "*:*-*-*-*-*" \) -delete'
+
+ts () {
+    date -u -d "@$1" "+%Y-%m-%dT%H:%M:%SZ"
+}
